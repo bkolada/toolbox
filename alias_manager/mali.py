@@ -7,7 +7,7 @@ aliases_file = os.path.join(home_dir, ".zshaliases")
 
 
 def print_alias(line):
-    print("{} {}".format(line[0], line[1]))
+    print("{} {}".format(*line))
 
 
 def convert_to_list(line):
@@ -25,7 +25,16 @@ def print_current_aliases():
         print_alias(i)
 
 
-def create_alias(alias, command):
+def check_if_alias_exists(alias):
+    return filter(lambda x: x[0]==alias, read_to_list())
+
+
+def create_alias(alias, command, force=None):
+    if not force:
+        existing_aliases = check_if_alias_exists(alias)
+        if existing_aliases:
+            print("Alias already exists {}={}".format(*existing_aliases[0]))
+        return
     with open(aliases_file, "a") as af:
         af.write('alias {}="{}"\n'.format(alias, command))
 
@@ -39,9 +48,17 @@ def print_usage():
     """)
 
 
-def remove_alias(alias):
-    pass
+def write_aliases_to_file(aliases):
+    with open(aliases_file, "w") as af:
+        af.writelines(map(lambda x: 'alias {}={}\n'.format(x[0], x[1]), aliases))
 
+
+def remove_alias(alias):
+    aliases = read_to_list()
+    aliases_without_alias = filter(lambda x: alias != x[0], aliases)
+    write_aliases_to_file(aliases_without_alias)
+    if len(aliases) != len(aliases_without_alias):
+        print("Removed {}".format(alias))
 
 if __name__=="__main__":
     if len(sys.argv) <= 1:
