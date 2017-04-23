@@ -62,8 +62,7 @@ def remove_alias(alias):
     if len(aliases) != len(aliases_without_alias):
         print("Removed all occurences of {}".format(alias))
 
-
-if __name__ == "__main__":
+def main():
     if len(sys.argv) <= 1:
         print_usage()
     elif "-c" in sys.argv:
