@@ -9,4 +9,4 @@ In daily basis I often use and create aliases. I keept my own aliases in file:
 Follow the installation in main README file.
 
 ## Usage
-Just run mali it prints all possible usages.
+Just run `alma` it prints all possible usages.

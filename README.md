@@ -2,7 +2,7 @@
 ... my scripts I usually use!
 
 ## Package include
-* Alias manager - cmd tool to maintain aliases.
+* Alias manager - `alma` cmd tool to maintain aliases.
 
 ## Installation
 

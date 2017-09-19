@@ -1,0 +1,4 @@
+#!/usr/bin/python
+
+import alma
+alma.main()
