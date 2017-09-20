@@ -28,7 +28,7 @@ def init_aliases_file():
     open(aliases_file_path, 'a').close()
 
     with open(zshrc_file_path, "a") as zshrc_file:
-        zshrc_file.write("\nsource .zshaliases # added by toolbox\n")
+        zshrc_file.write("\nsource ~/.zshaliases # added by toolbox\n")
 
 
 def create_alias(alias, command, force=None):
