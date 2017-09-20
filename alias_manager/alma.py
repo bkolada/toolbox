@@ -83,5 +83,3 @@ def print_usage():
     [alias] [command] - adds new alias to ~/.zshaliases
     -r [alias] - removes alias
 """)
-
-
