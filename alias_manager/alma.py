@@ -3,8 +3,8 @@ import os
 import sys
 
 home_dir = os.environ["HOME"]
-aliases_file = os.path.join(home_dir, ".zshaliases")
-
+aliases_file_path = os.path.join(home_dir, ".zshaliases")
+zshrc_file_path = os.path.join(home_dir, ".zshrc")
 
 def print_alias(line):
     print("{} {}".format(*line))
@@ -15,7 +15,7 @@ def convert_to_list(line):
 
 
 def read_to_list():
-    with open(aliases_file, "r") as af:
+    with open(aliases_file_path, "r") as af:
         aliases = map(convert_to_list, af)
     return aliases
 
@@ -37,13 +37,14 @@ def create_alias(alias, command, force=None):
             for line in existing_aliases:
                 print("{}={}".format(*line))
     else:
-        with open(aliases_file, "a") as af:
+        with open(aliases_file_path, "a") as af:
             af.write('alias {}="{}"\n'.format(alias, command))
             print('Alias added {}="{}"'.format(alias, command))
 
 
 def print_usage():
-    print("""Usage mali:
+    print("""Usage alma:
+    -i - create .zshaliases and add that to zshrc
     -c - prints aliases defined in ~/.zshaliases 
     [alias] [command] - adds new alias to ~/.zshaliases
     -r [alias] - removes alias
@@ -51,7 +52,7 @@ def print_usage():
 
 
 def write_aliases_to_file(aliases):
-    with open(aliases_file, "w") as af:
+    with open(aliases_file_path, "w") as af:
         af.writelines(map(lambda x: 'alias {}={}\n'.format(*x), aliases))
 
 
@@ -62,9 +63,12 @@ def remove_alias(alias):
     if len(aliases) != len(aliases_without_alias):
         print("Removed all occurences of {}".format(alias))
 
+
 def main():
     if len(sys.argv) <= 1:
         print_usage()
+    elif "-i" in sys.argv:
+        init_aliases_file()
     elif "-c" in sys.argv:
         print_current_aliases()
     elif "-r" in sys.argv and len(sys.argv) == 3:
@@ -74,3 +78,11 @@ def main():
     else:
         print("Not recognizable arguments {}".format(sys.argv[1:]))
         print_usage()
+
+
+def init_aliases_file():
+    global aliases_file_path, zshrc_file_path
+    open(aliases_file_path, 'a').close()
+
+    with open(zshrc_file_path, "a") as zshrc_file:
+        zshrc_file.write("\nsource .zshaliases\n")
