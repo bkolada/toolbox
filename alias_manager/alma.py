@@ -6,6 +6,7 @@ home_dir = os.environ["HOME"]
 aliases_file_path = os.path.join(home_dir, ".zshaliases")
 zshrc_file_path = os.path.join(home_dir, ".zshrc")
 
+
 def print_alias(line):
     print("{} {}".format(*line))
 
@@ -30,16 +31,16 @@ def check_if_alias_exists(alias):
 
 
 def create_alias(alias, command, force=None):
-    if not force:
-        existing_aliases = check_if_alias_exists(alias)
-        if existing_aliases:
-            print("Alias already exists")
-            for line in existing_aliases:
-                print("{}={}".format(*line))
-    else:
-        with open(aliases_file_path, "a") as af:
+    print("create alias")
+    existing_aliases = check_if_alias_exists(alias)
+    if not existing_aliases or (existing_aliases and force):
+        with open(aliases_file_path, "a+") as af:
             af.write('alias {}="{}"\n'.format(alias, command))
             print('Alias added {}="{}"'.format(alias, command))
+    else:
+        print("Alias already exists")
+        for line in existing_aliases:
+            print("{}={}".format(*line))
 
 
 def print_usage():
